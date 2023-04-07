@@ -7,7 +7,7 @@ food_items = {
     "Chinese": {"name": "Hakka Noddles", "quantity": 2, "price": 120}
 }
 for code, details in food_items.items():
-    print("Food Code: " + code)
+    print("Cuisine: " + code)
     print("Food Name: " + details['name'])
     print("Quantity: " + str(details['quantity']))
     print("Price: ₹" + "{:.2f}".format(details['price']))
