@@ -25,9 +25,10 @@ def system():
     # variable datatype assignment
     orderno = StringVar()
     pizza = StringVar()
-    burger = StringVar()
+    Pasta = StringVar()
     icecream = StringVar()
     drinks = StringVar()
+    Thali = StringVar()
     cost = StringVar()
     subtotal = StringVar()
     tax = StringVar()
@@ -42,6 +43,7 @@ def system():
         bu = float(burger.get())
         ice = float(icecream.get())
         dr = float(drinks.get())
+        Th = float(Thali.get())
 
         # computing the cost of items
 
@@ -49,12 +51,13 @@ def system():
         costbu = bu * 125
         costice = ice * 80
         costdr = dr * 60
+        costTh = Th * 100
 
         # computing the charges
         costofmeal = (costpi + costbu + costice + costdr)
-        ptax = ((costpi + costbu + costice + costdr) * 0.18)
-        sub = (costpi + costbu + costice + costdr)
-        ser = ((costpi + costbu + costice + costdr) / 99)
+        ptax = ((costpi + costbu + costice + costdr + costTh) * 0.18)
+        sub = (costpi + costbu + costice + costdr + costTh)
+        ser = ((costpi + costbu + costice + costdr + costTh) / 99)
         paidtax = str(ptax)
         Service = str(ser)
         overall = str(ptax + ser + sub)
@@ -73,6 +76,7 @@ def system():
         burger.set("")
         icecream.set("")
         drinks.set("")
+        Thali.set("")
         cost.set("")
         subtotal.set("")
         tax.set("")
@@ -117,7 +121,7 @@ def system():
 
     ###########  Creating table #############
     my_tree = ttk.Treeview(rightframe)
-    my_tree['columns'] = ("ordno", "piz", "bur", "ice", "dr", "ct", "sb", "tax", "sr", "tot")
+    my_tree['columns'] = ("ordno", "piz", "bur", "ice", "dr", "Th", "ct", "sb", "tax", "sr", "tot")
 
     ############ creating  for table ################
     horizontal_bar = ttk.Scrollbar(rightframe, orient="horizontal")
@@ -137,6 +141,7 @@ def system():
     my_tree.column("bur", anchor=CENTER, width=50, minwidth=25)
     my_tree.column("ice", anchor=CENTER, width=80, minwidth=25)
     my_tree.column("dr", anchor=CENTER, width=50, minwidth=25)
+    my_tree.column("Th", anchor=CENTER, width=50, minwidth=25)
     my_tree.column("ct", anchor=CENTER, width=50, minwidth=25)
     my_tree.column("sb", anchor=CENTER, width=100, minwidth=25)
     my_tree.column("tax", anchor=CENTER, width=50, minwidth=25)
@@ -149,6 +154,7 @@ def system():
     my_tree.heading("bur", text="Burger", anchor=CENTER)
     my_tree.heading("ice", text="Ice cream", anchor=CENTER)
     my_tree.heading("dr", text="Drinks", anchor=CENTER)
+    my_tree.column("Th", anchor=CENTER, width=50, minwidth=25)
     my_tree.heading("ct", text="Cost", anchor=CENTER)
     my_tree.heading("sb", text="Subtotal", anchor=CENTER)
     my_tree.heading("tax", text="Tax", anchor=CENTER)
@@ -167,17 +173,18 @@ def system():
         burgers = burger.get()
         ices = icecream.get()
         drinkss = drinks.get()
+        Thali = Thali.get()
         costs = cost.get()
         subtotals = subtotal.get()
         taxs = tax.get()
         services = service.get()
         totals = total.get()
-        if orders == "" or pizzas == "" or burgers == "" or ices == "" or drinkss == "" or costs == "" or subtotals == "" or taxs == "" or services == "" or totals == "":
+        if orders == "" or pizzas == "" or burgers == "" or ices == "" or drinkss == "" or Thali == "" or costs == "" or subtotals == "" or taxs == "" or services == "" or totals == "":
             messagebox.showinfo("Warning", "Please fill the empty field!!!")
         else:
             connectn.execute(
-                'INSERT INTO Restaurantrecords (ordno, piz, bur , ice ,dr ,ct ,sb ,tax, sr, tot) VALUES (?,?,?,?,?,?,?,?,?,?)',
-                (orders, pizzas, burgers, ices, drinkss, costs, subtotals, taxs, services, totals));
+                'INSERT INTO Restaurantrecords (ordno, piz, bur , ice ,dr ,Th,ct ,sb ,tax, sr, tot) VALUES (?,?,?,?,?,?,?,?,?,?)',
+                (orders, pizzas, burgers, ices, drinkss, Thali, costs, subtotals, taxs, services, totals));
             connectn.commit()
             messagebox.showinfo("Message", "Stored successfully")
         # refresh table data
@@ -249,6 +256,11 @@ def system():
     drinklbl = Label(leftframe, font=('Calibri', 16, 'bold'), text="Drinks", fg="black", bd=5, anchor=W).grid(row=5,
                                                                                                             column=0)
     drinktxt = Entry(leftframe, font=('Calibri', 16, 'bold'), bd=6, insertwidth=4, justify='right',
+                     textvariable=drinks).grid(row=5, column=1)
+    # Thali
+     Thalilbl = Label(leftframe, font=('Calibri', 16, 'bold'), text="Thali", fg="black", bd=5, anchor=W).grid(row=5,
+                                                                                                            column=0)
+    Thalitxt = Entry(leftframe, font=('Calibri', 16, 'bold'), bd=6, insertwidth=4, justify='right',
                      textvariable=drinks).grid(row=5, column=1)
     # cost
     costlbl = Label(leftframe, font=('Calibri', 16, 'bold'), text="Cost", bd=5, anchor=W).grid(row=6, column=0)
@@ -404,6 +416,10 @@ def system():
         lbldrinks.grid(row=5, column=0)
         lblpriced = Label(roott, font=("Calibri", 20, "bold"), text="60/-", fg="blue", bd=10)
         lblpriced.grid(row=5, column=3)
+        lblThali = Label(roott, font=("Calibri", 20, "bold"), text="Thali", fg="Blue", bd=10)
+        lblThali.grid(row=6, column=0)
+        lblpriced = Label(roott, font=("Calibri", 20, "bold"), text="100/-", fg="blue", bd=10)
+        lblpriced.grid(row=6, column=3)
         roott.mainloop()
 
     # menubutton
