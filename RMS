@@ -1,0 +1,13 @@
+print("Restaurant Management System")
+food_items = {
+   "American": {"name": "Pizza", "quantity": 2, "price": 499},
+    "Italian": {"name": "Pasta", "quantity": 3, "price": 299},
+    "Indian": {"name": "Thali", "quantity": 2, "price": 199},
+    "British": {"name": "Roast", "quantity": 1, "price": 399},
+    "Chinese": {"name": "Hakka Noddles", "quantity": 2, "price": 120}
+}
+for code, details in food_items.items():
+    print("Food Code: " + code)
+    print("Food Name: " + details['name'])
+    print("Quantity: " + str(details['quantity']))
+    print("Price: ₹" + "{:.2f}".format(details['price']))
