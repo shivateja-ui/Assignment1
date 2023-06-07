@@ -1,0 +1,45 @@
+#Map and Lambda Function
+cube = lambda x: pow(x,3)
+def fibonacci(n):
+    lis = [0,1]
+    for i in range(2,n):
+        lis.append(lis[i-2] + lis[i-1])
+    return(lis[0:n])
+if __name__ == '__main__':
+    n = int(input())
+    print(list(map(cube, fibonacci(n))))
+
+#List Comprehensions
+X = int(input())
+Y = int(input())
+Z = int(input())
+N = int(input())
+ans = [[i, j, k] for i in range(X + 1) for j in range(Y + 1) for k in range(Z + 1) if i + j + k != N]
+print(ans)
+
+#Matching Specific String
+Regex_Pattern = r'hackerrank'
+import re
+Test_String = input()
+match = re.findall(Regex_Pattern, Test_String)
+print("Number of matches :", len(match))
+
+#Matching Digits & Non-Digit Characters
+Regex_Pattern = r"\d\d\D\d\d\D\d\d\d\d"
+import re
+print(str(bool(re.search(Regex_Pattern, input()))).lower())
+
+#Matching Specific Characters
+Regex_Pattern = r'^[123][120][xs0][30Aa][xsu][\.,]$'
+import re
+print(str(bool(re.search(Regex_Pattern, input()))).lower())
+
+#Matching Character Ranges
+Regex_Pattern = r'^[a-z][1-9][^a-z][^A-Z][A-Z]'
+import re
+print(str(bool(re.search(Regex_Pattern, input()))).lower())
+
+#Matching Start & End
+Regex_Pattern = r"^\d\w{4}\.$"
+import re
+print(str(bool(re.search(Regex_Pattern, input()))).lower())
