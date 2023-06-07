@@ -1,0 +1,147 @@
+#1.Finding the percentage
+if __name__ == '__main__':
+    n = int(input())
+    student_marks = {}
+    for _ in range(n):
+        name, *line = input().split()
+        scores = list(map(float, line))
+        student_marks[name] = scores
+    query_name = input()
+    l1 = list(student_marks[query_name]) 
+    addition = sum(l1)
+    result = addition/len(l1)
+    print('%.2f'% result)
+
+# 2.String Split
+def split_and_join(line):
+    line = line.split(" ")
+    line ="-".join(line)
+    return line
+if __name__ == '__main__':
+    line = input()
+    result = split_and_join(line)
+    print(result)
+
+#3.Set Intersection
+English = int(input())
+x = set(map(int,input().split()))
+French = int(input())
+y = set(map(int,input().split()))
+print(len(x.intersection(y)))
+
+#4.RunnerUp
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    list2 = list(set(arr))
+    list2.sort()
+    print(list2[-2])
+
+#5.sWAP cASE
+def swap_case(s):
+    s=s.swapcase()
+    return s
+if __name__ == '__main__':
+    s = input()
+    result = swap_case(s)
+    print(result)
+
+#6.Arithmetic Operators
+if __name__ == '__main__':
+    a = int(input())
+    b = int(input())
+    print(a+b)
+    print(a-b)
+    print(a*b)
+
+#7.Python: Division
+if __name__ == '__main__':
+    a = int(input())
+    b = int(input())
+    print(a//b)
+    print(a/b)
+
+#8.Python If-Else
+import math
+import os
+import random
+import re
+import sys
+if __name__ == '__main__':
+    n = int(input().strip())
+    if(n%2!=0):
+        print("Weird")
+    elif(2<=n<=5):
+        if(n%2==0):
+            print("Not Weird")
+    elif(6<=n<=20):
+        if(n%2==0):
+            print("Weird")
+    else:
+        if(n%2==0):
+            print("Not Weird")
+
+#9.Nested Lists
+if __name__ == '__main__':
+    alist = []
+    for i in range(int(input())):
+        name = input()
+        score = float(input())
+        alist.append([name, score])
+second_highest = sorted(set([score for name, score in alist]))[1]
+print('\n'.join(sorted([name for name, score in alist if score == second_highest])))
+
+#10.Loops
+if __name__ == '__main__':
+    i=0
+    n = int(input())
+    while i<n:
+        print(i**2)
+        i+=1
+
+#11.Write a function
+def is_leap(year):
+    leap = False
+    if (year % 400 == 0) and (year % 100 == 0):
+        return True
+    elif (year % 4 ==0) and (year % 100 != 0):
+        return True
+    else:
+        return leap
+year = int(input())
+print(is_leap(year))
+
+#12.Find a string
+def count_substring(string, sub_string):
+    total = 0
+    for i in range(len(string)):
+        if string[i:len(string)].startswith(sub_string):
+            total += 1
+    return total
+if __name__ == '__main__':
+    string = input().strip()
+    sub_string = input().strip()
+    
+    count = count_substring(string, sub_string)
+    print(count)
+
+#13.Lists
+if __name__ == '__main__':
+    N = int(input())
+    List=[];
+    for i in range(N):
+        command=input().split();
+        if command[0] == "insert":
+            List.insert(int(command[1]),int(command[2]))
+        elif command[0] == "append":
+            List.append(int(command[1]))
+        elif command[0] == "pop":
+            List.pop();
+        elif command[0] == "print":
+            print(List)
+        elif command[0] == "remove":
+            List.remove(int(command[1]))
+        elif command[0] == "sort":
+            List.sort();
+        else:
+            List.reverse();
