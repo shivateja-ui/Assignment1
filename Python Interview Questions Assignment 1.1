@@ -1,0 +1,119 @@
+# Data Types
+1.What is a dynamically typed language?
+A:Before we understand a dynamically typed language, we should learn about what typing is. Typing refers to type-checking in programming languages. In a strongly-typed language, such as Python, 
+"1" + 2 will result in a type error since these languages don't allow for "type-coercion" (implicit conversion of data types). On the other hand, a weakly-typed language, such as Javascript, will simply output "12" as result.
+Type-checking can be done at two stages -Static - Data Types are checked before execution.Dynamic - Data Types are checked during execution.
+Python is an interpreted language, executes each statement line by line and thus type-checking is done on the fly, during execution. Hence, Python is a Dynamically Typed Language.
+
+2.What is PEP 8 and why is it important?
+A: PEP stands for Python Enhancement Proposal. A PEP is an official design document providing information to the Python community, or describing a new feature for Python or its processes. 
+PEP 8 is especially important since it documents the style guidelines for Python Code. 
+Apparently contributing to the Python open-source community requires you to follow these style guidelines sincerely and strictly
+
+3.What is Scope in Python?
+A:Every object in Python functions within a scope. A scope is a block of code where an object in Python remains relevant. 
+Namespaces uniquely identify all the objects inside a program. However, these namespaces also have a scope defined for them where you could use their objects without any prefix. 
+A few examples of scope created during code execution in Python are as follows:
+A local scope refers to the local objects available in the current function.
+A global scope refers to the objects available throughout the code execution since their inception.
+A module-level scope refers to the global objects of the current module accessible in the program.
+An outermost scope refers to all the built-in names callable in the program. The objects in this scope are searched last to find the name referenced
+
+4.What are unit tests in Python?
+A:Unit test is a unit testing framework of Python.Unit testing means testing different components of software separately. 
+Can you think about why unit testing is important? Imagine a scenario, you are building software that uses three components namely A, B, and C. Now, suppose your software breaks at a point time. 
+How will you find which component was responsible for breaking the software? Maybe it was component A that failed, which in turn failed component B, and this actually failed the software. 
+There can be many such combinations.This is why it is necessary to test each and every component properly so that we know which component might be highly responsible for the failure of the software
+
+5.Explain how can you make a Python Script executable on Unix?
+A:Script file must begin with #!/usr/bin/env python
+
+6.How is memory managed in Python?
+A:Memory management in Python is handled by the Python Memory Manager. The memory allocated by the manager is in form of a private heap space dedicated to Python. 
+All Python objects are stored in this heap and being private, it is inaccessible to the programmer. Though, python does provide some core API functions to work upon the private heap space.
+Additionally, Python has an in-built garbage collection to recycle the unused memory for the private heap space.
+
+#Operators
+1.Which function overloads the >> operator?
+A:rshift() overloads the >> operator
+
+2.Which operator is overloaded by the or() function?
+A:or() function overloads the bitwise OR operator
+
+3.What is meant by an Operator in Python?
+These are the special symbols in python and are used to execute an Arithmetic or Logical computation. 
+An operator alone cannot perform an activity, it needs an Operand. 
+
+4.What is an operand? 
+A:An Operand is a value that the operator needs to complete a task.
+
+5.Types of operators in Python
+We have multiple operators in Python, and each operator is subdivided into other operators.
+Arithmetic operators
+Comparison operators
+Assignment operators
+Logical operators
+Bitwise operators
+Membership operators
+Special operators:1)Identity operators 2)Membership operators
+
+#Conditional statement
+1.What is pass in Python?
+A:Pass means, no-operation Python statement, or in other words it is a place holder in compound statement.
+where there should be a blank left and nothing has to be written there.
+
+2.What Is The Difference Between Pass And Continue In Python? 
+A:The continue statement makes the loop to resume from the next iteration.
+On the contrary, the pass statement instructs to do nothing, and the remainder of the code executes as usual.
+
+3.What are the comparison operators in Python?
+A:< Less than, > Greater than, <= Less than or equal to, >= Greater than or equal to, = Equal to, != not equal, o alternative not equal. 
+Note a single = is NOT a Python comparison operator, it is an assignment operator only.
+
+4.Illustrate comparing two strings, printing if the first string is longer, equal, or shorter than the second string.
+A:if len(stringl) > len(string2):
+print “Stringl is longer than string2.”
+elif len(stringl) < len(string2):
+print “String1 is shorter than string2.”
+else:
+print “String1 is the same length as string2.”
+
+#Loop statement
+1. What is the difference between a for loop and a while loop?
+A:A for loop is typically used when you know exactly how many times the loop needs to be repeated. 
+A while loop is typically used when you don't know how many times the loop needs to be repeated.
+A while loop repeats as long as its condition is true. For example, if a while loop says "while x == 5", then the line will execute as long as x equals five.
+
+2.How can I use a break statement in my Python for loops?
+A break statement can be used to terminate a loop. It is often used when the programmer needs to stop iterating through the data and instead go back to checking for other conditions.
+An example of such a situation is when we need to break out of a for loop if an exception occurs. 
+This will allow us to take different paths depending on whether or not we want to handle that exception, or ignore it and continue with whatever else follows after the for-loop.
+Code Example for Break Statement is as follows:
+ animals = ["dog","cat","sheep","tiger","lion"]
+ for x in animals:
+    print (x)
+    if x == "tiger":
+        break;
+
+3.what is the difference between the continue and break statements in Python?
+The break statement terminates the loop that contains it. 
+The program immediately moves to the code section that is in the outer scope of the loop.
+The continue statement skips the rest of the code of the current iteration and move to the next iteration.
+
+#functions
+1. What are the two types of functions in Python?
+There are two types of functions in Python: built-in functions and user-defined functions. 
+Built-in functions are functions that are already defined in the Python language, such as the print() function. 
+User-defined functions are functions that are created by the user, and they can be created to do anything that the user wants them to do.
+
+2.Do Python functions have return values? If yes, then how many can they have?
+Yes, Python functions can have return values. They can have a single return value, or they can have multiple return values.
+
+3.Is it possible for a function’s code to read from or write to variables defined outside that function? If yes, then how?
+Yes, it is possible for a function’s code to read from or write to variables defined outside that function. This is known as “accessing global variables.” 
+To do this, the function must first use the “global” keyword to declare which variables it is accessing.
+
+4.Can you explain what decorators are in Python?
+Decorators are a way to dynamically alter the behavior of a function. They are usually used as a way to add functionality to an existing function without having to modify the code of the function itself. 
+Decorators are typically written in the form of a wrapper function.
+
