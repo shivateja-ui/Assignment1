@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+users = pd.read_csv(r'https://raw.githubusercontent.com/justmarkham/DAT8/master/data/u.user',sep="|")
+users.head()
+users.set_index('user_id', inplace=True)
+users
+users.head(10)
+users.tail(10)
+num_observations = users.shape[0]
+print("Number of observations in the dataset:", num_observations)
+num_columns = users.shape[1]
+print("Number of columns in the dataset:", num_columns)
+users.columns
+user_ids = list(range(1, 944))
+df = pd.DataFrame(users, index=user_ids, columns=['user_id', 'age', 'gender','occupation','zip_code'])
+df.index
+users.info()
+occupation_column = df['occupation']
+print(occupation_column)
+num_occupations = df['occupation'].nunique()
+print( num_occupations)
+most_frequent_occupation = df['occupation'].value_counts().idxmax()
+result = pd.Series([most_frequent_occupation])
+print(result)
+description = df.describe(include='all')
+print(description)
+summary = df['occupation'].value_counts()
+print(summary)
+mean_age = df['age'].mean()
+mean_age
+age_counts = df['age'].min()
+age_counts
