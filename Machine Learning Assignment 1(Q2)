@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+warnings.filterwarnings('ignore')
+url = "house_rental_data.csv"
+df = pd.read_csv(url)
+print(df.head())
+print(df.info())
+print(df.describe())
+df.set_index('SL.No', inplace=True)
+new_column_names = {
+    'Bedroom': 'No.of Bedrooms',
+    'Living.Room': 'No.of Living Rooms',
+    'Bathroom': 'No.of Bathrooms'
+}
+df = df.rename(columns=new_column_names)
+k = np.sqrt(645)
+k
+from sklearn.cluster import KMeans
+X = df.drop('Price', axis=1)
+num_clusters = 25
+kmeans = KMeans(n_clusters=num_clusters, random_state=0)
+cluster_assignments = kmeans.fit_predict(X)
+df['cluster'] = cluster_assignments
+print(df.head())
+df.to_csv("house_rental_data_with_clusters.csv", index=False)
