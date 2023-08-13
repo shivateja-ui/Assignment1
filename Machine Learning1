@@ -1,0 +1,53 @@
+Question 1
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+warnings.filterwarnings('ignore')
+url = "https://raw.githubusercontent.com/edyoda/data-science-complete-tutorial/master/Data/house_rental_data.csv.txt"
+df = pd.read_csv(url)
+print(df.head())
+print(df.info())
+print(df.describe())
+df.isnull().sum()
+plt.hist(df['Price'], bins=20, edgecolor='black')
+plt.xlabel('Rent Amount')
+plt.ylabel('Frequency')
+plt.title('Distribution of Rent Amounts')
+plt.show()
+avg_rent_by_type = df.groupby('Sqft')['Price'].mean()
+avg_rent_by_type.plot(kind='bar', color='skyblue')
+plt.xlabel('House Type')
+plt.ylabel('Average Rent Amount')
+plt.title('Average Rent Amount by House Type')
+plt.xticks(rotation=45)
+plt.show()
+corr_matrix = df.corr()
+plt.figure(figsize=(10, 8))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
+X = df.drop('Price', axis=1) 
+y = df['Price'] 
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+from sklearn.neighbors import KNeighborsRegressor
+knr = KNeighborsRegressor()
+knr
+knr.fit(X_train,y_train)
+y_pred = knr.predict(X_test)
+y_pred
+from sklearn.metrics import r2_score
+r2_score(y_test,y_pred) # the default value of k is holding with accuracy of 74%
+df.shape
+k = np.sqrt(645)
+k
+from sklearn.neighbors import KNeighborsRegressor
+knr = KNeighborsRegressor(n_neighbors = 25)
+knr
+knr.fit(X_train,y_train)
+y_pred_24 = knr.predict(X_test)
+y_pred_24
+from sklearn.metrics import r2_score
+r2_score(y_test,y_pred_24) # if we find the k value and apply it the accuracy is increased to 76%
