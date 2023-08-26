@@ -1,0 +1,29 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+data_url = "Nutrition__Physical_Activity__and_Obesity_-_Behavioral_Risk_Factor_Surveillance_System.csv"
+df = pd.read_csv(data_url)
+columns_to_drop = ["LocationAbbr", "Topic", "Data_Value_Unit", "Data_Value_Footnote", "Data_Value_Type",
+                   "Data_Value_Alt", "Data_Value_Footnote_Symbol", "Low_Confidence_Limit", 
+                   "Data_Value_Footnote_Symbol", "ClassID", "TopicID", "LocationID", 
+                    "StratificationID1"]
+df.drop(columns=columns_to_drop, inplace=True)
+df.dropna(subset=["Data_Value"], inplace=True)
+df["Class"] = df["Class"].str.strip()
+df["Education"] = df["Education"].str.strip()
+df["Gender"] = df["Gender"].str.strip()
+df["Class"].fillna("Unknown", inplace=True)
+df["Education"].fillna("Unknown", inplace=True)
+df["Gender"].fillna("Unknown", inplace=True)
+selected_features = ["Class", "Education", "Gender","Sample_Size"]
+X = df[selected_features]
+y = df["Data_Value"]
+X = pd.get_dummies(X, columns=["Class", "Education", "Gender"], drop_first=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+estimated_obese_percentage = y_pred
+print("Estimated Obese Percentages:", estimated_obese_percentage)
