@@ -1,0 +1,21 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+train_data = pd.read_csv("cleaned_train.csv")
+test_data = pd.read_csv("cleaned_test.csv")
+selected_features = ["Id","MSSubClass","LotArea"] 
+X = train_data[selected_features]
+y = train_data["SalePrice"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+numerical_transformer = StandardScaler()
+pipeline = Pipeline(steps=[('scaler', numerical_transformer),
+                           ('model', LinearRegression())])
+pipeline.fit(X_train, y_train)
+y_pred = pipeline.predict(X_test)
+rmse = mean_squared_error(y_test, y_pred, squared=False)
+print(f"Root Mean Squared Error: {rmse:.2f}")
+predicted_prices = pipeline.predict(test_data[selected_features])
+submission = pd.DataFrame({"Id": test_data["Id"], "SalePrice": predicted_prices})
+submission.to_csv("Price_prediction.csv", index=False)
