@@ -1,0 +1,38 @@
+import pandas as pd
+data_url = "https://github.com/edyoda/data-science-complete-tutorial/raw/72db4580f52e6ebf58aff54592eeb9e4c8e2d2fb/Data/HR_comma_sep.csv.txt"
+df = pd.read_csv(data_url)
+df.head()
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+df.fillna(0, inplace=True)
+le = LabelEncoder()
+df['salary'] = le.fit_transform(df['salary'])
+df['sales'] = le.fit_transform(df['sales'])
+X = df.drop(['left'], axis=1)
+y = df['left']
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.figure(figsize=(6, 4))
+sns.countplot(data=df, x='left')
+plt.title("Distribution of Employee Exit")
+plt.xlabel("Left (1: Yes, 0: No)")
+plt.ylabel("Count")
+plt.show()
+correlation_matrix = df.corr()
+plt.figure(figsize=(10, 6))
+sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
+plt.title("Correlation Matrix")
+plt.show()
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+model = LogisticRegression(random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+classification_rep = classification_report(y_test, y_pred)
+print(f"Accuracy: {accuracy:.2f}")
+print("Classification Report:")
+print(classification_rep)
