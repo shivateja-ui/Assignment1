@@ -1,0 +1,50 @@
+import pandas as pd
+import numpy as np
+url = "https://github.com/edyoda/DS31032023/raw/6613a850cf4eabf3b60b13809e33406265185072/Machine%20Learning/September/13-9-2023/play_tennis.csv"
+tennis_data = pd.read_csv(url)
+def frequency_tables(data, target_column):
+    frequency = {}
+    for column in data.columns:
+        if column != target_column:
+            table = data.groupby([column, target_column]).size().unstack().fillna(0)
+            frequency[column] = table
+    return frequency
+target_column = 'play'
+frequency_tables_data = frequency_tables(tennis_data, target_column)
+def likelihood_table(frequency_tables_data, target_column):
+    likelihood = {}
+    total_instances = len(tennis_data)
+    for feature, table in frequency_tables_data.items():
+        likelihood_table = table / table.sum(axis=1)
+        likelihood[feature] = likelihood_table
+    return likelihood
+likelihood_table_data = likelihood_table(frequency_tables_data, target_column)
+def class_probabilities(data, target_column):
+    class_probs = {}
+    total_instances = len(data)
+    for class_label in data[target_column].unique():
+        class_probs[class_label] = len(data[data[target_column] == class_label]) / total_instances
+    return class_probs
+class_probabilities_data = class_probabilities(tennis_data, target_column)
+def calculate_posterior(likelihood_table_data, class_probabilities_data, features):
+    posteriors = {}
+    for class_label, class_prob in class_probabilities_data.items():
+        posterior = class_prob
+        for feature, value in features.items():
+            if feature in likelihood_table_data:
+                likelihood = likelihood_table_data[feature].loc[value, class_label]
+                posterior *= likelihood
+        posteriors[class_label] = posterior
+    return posteriors
+test_features = {
+    'Outlook': 'Sunny',
+    'Temperature': 'Cool',
+    'Humidity': 'Normal',
+    'Wind': 'Strong'
+}
+posteriors = calculate_posterior(likelihood_table_data, class_probabilities_data, test_features)
+predicted_class = max(posteriors, key=posteriors.get)
+print("Posterior Probabilities:")
+for class_label, posterior in posteriors.items():
+    print(f"P({class_label} | X) = {posterior:.6f}")
+print("\nThe predicted class is:", predicted_class)
