@@ -1,0 +1,140 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+df = pd.read_csv('Train_Data.csv')
+print(df.shape)
+df.head()
+df.info()
+cols = ['text', 'author', 'controversiality', 'parent_text', 'parent_score', 'parent_votes',
+'parent_author', 'parent_controversiality', 'Score']
+for col in cols:
+    print(col,':',df[col].nunique())
+df['score vs. votes'] = df['parent_score']==df['parent_votes']
+df['score vs. votes'].nunique()
+df.drop(['parent_votes', 'score vs. votes'], axis= 1, inplace=True)
+df.head()
+cor = df.corr()
+sns.heatmap(cor)
+categorical_cols = ['text','author','parent_text','parent_author']
+for col in df[categorical_cols]:
+    df[col] = df[col].str.lower()
+    df[col] = df[col].str.strip()
+df.head()
+import string
+for col in df[categorical_cols]:
+    df[col] = df[col].apply(lambda x:''.join([i for i in x if i not in string.punctuation]))
+df.head()
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+def text_tokens(row):
+    text = row['text']
+    tokens = word_tokenize(text)
+    token_words = [w for w in tokens if w.isalpha()]
+    return token_words
+df['text_tokens'] = df.apply(text_tokens, axis=1)
+def parent_text_tokens(row):
+    parent_text = row['parent_text']
+    tokens = word_tokenize(parent_text)
+    token_words = [w for w in tokens if w.isalpha()]
+    return token_words
+df['parent_text_tokens'] = df.apply(parent_text_tokens, axis=1)
+df.head()
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+def text_tokens(row):
+    text = row['text']
+    tokens = word_tokenize(text)
+    token_words = [w for w in tokens if w.isalpha()]
+    return token_words
+df['text_tokens'] = df.apply(text_tokens, axis=1)
+def parent_text_tokens(row):
+    parent_text = row['parent_text']
+    tokens = word_tokenize(parent_text)
+    token_words = [w for w in tokens if w.isalpha()]
+    return token_words
+df['parent_text_tokens'] = df.apply(parent_text_tokens, axis=1)
+df.head()
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+def text_tokens(row):
+    text = row['text']
+    tokens = word_tokenize(text)
+    token_words = [w for w in tokens if w.isalpha()]
+    return token_words
+df['text_tokens'] = df.apply(text_tokens, axis=1)
+def parent_text_tokens(row):
+    parent_text = row['parent_text']
+    tokens = word_tokenize(parent_text)
+    token_words = [w for w in tokens if w.isalpha()]
+    return token_words
+df['parent_text_tokens'] = df.apply(parent_text_tokens, axis=1)
+df.head()
+stop_words = stopwords.words('english')
+tokens_cols = ['text_tokens','parent_text_tokens']
+for col in tokens_cols:
+    df[col] = df[col].apply(lambda x: ' '.join([w for w in x if w not in (stop_words)]))
+df.head()
+from nltk.stem import WordNetLemmatizer
+nltk.download('wordnet')
+lemmatizer = WordNetLemmatizer()
+lemmatize_function = lambda x: [lemmatizer.lemmatize(str(word)) for word in x.split()]
+for col in tokens_cols:
+    df[col] = df[col].apply(lemmatize_function)
+df.head()
+df['text']= df['text_tokens'].apply(lambda x: ' '.join(x))
+df['parent_text']= df['parent_text_tokens'].apply(lambda x: ' '.join(x))
+df.drop(['text_tokens', 'parent_text_tokens'], axis=1, inplace= True)
+df.head()
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+vectorizer = CountVectorizer()
+text = vectorizer.fit_transform(df['text']).toarray()
+text = pd.DataFrame(text, columns=vectorizer.get_feature_names())
+text.shape
+vectorizer1 = TfidfVectorizer(max_features=50,min_df=1,max_df=0.7)
+text_tf_idf = vectorizer1.fit_transform(df['text']).toarray()
+text_tf_idf = pd.DataFrame(text_tf_idf, columns=vectorizer1.get_feature_names())
+text_tf_idf.shape
+num_cols = df[['controversiality', 'parent_score', 'parent_controversiality']]
+x = pd.concat([text_tf_idf, num_cols], axis=1)
+y = df['Score']
+from sklearn.model_selection import train_test_split
+x_train, x_val, y_train, y_val = train_test_split(x,y,test_size=0.2, random_state = 42)
+from sklearn.linear_model import LinearRegression
+lr = LinearRegression()
+lr.fit(x_train, y_train)
+pred_y = lr.predict(x_val)
+from sklearn.metrics import mean_squared_error
+print('Root Mean Squared Error is: ', np.sqrt(mean_squared_error(y_val, pred_y)))
+from xgboost import XGBRegressor
+xgbReg = XGBRegressor(verbosity=0)
+xgbReg.fit(x_train, y_train)
+pred_y1 = xgbReg.predict(x_val)
+print('Root Mean Squared Error is: ', np.sqrt(mean_squared_error(y_val, pred_y1)))
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.model_selection import GridSearchCV
+param_grid = {'n_neighbors': np.arange(1, 100)}
+knn = KNeighborsRegressor()
+knn_cv = GridSearchCV(knn, param_grid, cv=5)
+knn_cv.fit(x_train, y_train)
+knn_cv.best_params_
+knn = KNeighborsRegressor(n_neighbors = 50)
+knn.fit(x_train, y_train)
+pred_y2 = knn.predict(x_val)
+print('Root Mean Squared Error is: ', np.sqrt(mean_squared_error(y_val, pred_y2)))
+predict_test_y = lr.predict(test)
+predict_test_y1 = xgbReg.predict(test)
+predict_test_y2 = knn.predict(test)
+res = pd.DataFrame(predict_test_y2) 
+res.index = test_data.index 
+res.columns = ["prediction"]
+res.to_csv("submission6.csv")
