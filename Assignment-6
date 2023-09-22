@@ -1,0 +1,37 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+df = pd.read_csv("spam.csv", encoding="ISO-8859-1")
+print("Dataset Columns:", df.columns)
+print("Number of Messages:", len(df))
+print("Class Distribution:\n", df["v1"].value_counts())
+df = df.rename(columns={"v1": "label", "v2": "message"})
+df["label"] = df["label"].map({"ham": 0, "spam": 1})
+X_train, X_test, y_train, y_test = train_test_split(df["message"], df["label"], test_size=0.2, random_state=42)
+vectorizer = CountVectorizer()
+X_train = vectorizer.fit_transform(X_train)
+X_test = vectorizer.transform(X_test)
+classifier = MultinomialNB()
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+class_report = classification_report(y_test, y_pred)
+print("Accuracy:", accuracy)
+print("\nConfusion Matrix:\n", conf_matrix)
+print("\nClassification Report:\n", class_report)
+plt.figure(figsize=(8, 6))
+plt.imshow(conf_matrix, interpolation="nearest", cmap=plt.cm.Blues)
+plt.title("Confusion Matrix")
+plt.colorbar()
+plt.xlabel("Predicted Labels")
+plt.ylabel("True Labels")
+plt.xticks([0, 1], ["Ham", "Spam"])
+plt.yticks([0, 1], ["Ham", "Spam"])
+for i in range(2):
+    for j in range(2):
+        plt.text(j, i, str(conf_matrix[i, j]), horizontalalignment="center", color="white" if conf_matrix[i, j] > conf_matrix.max() / 2 else "black")
+plt.show()
