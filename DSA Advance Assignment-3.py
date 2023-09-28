@@ -59,49 +59,39 @@ if __name__ == "__main__":
     print(f"The height of the tree is: {height}")
 #3.Perform Pre-order, Post-order, In-order traversal
 class TreeNode:
-    def __init__(self, key):
+    def __init__(self, value):
+        self.value = value
         self.left = None
         self.right = None
-        self.val = key
-def insert(root, key):
-    if root is None:
-        return TreeNode(key)
-    else:
-        if key < root.val:
-            root.left = insert(root.left, key)
-        else:
-            root.right = insert(root.right, key)
-    return root
-def inorder_traversal(root):
-    if root:
-        inorder_traversal(root.left)
-        print(root.val, end=" ")
-        inorder_traversal(root.right)
-def preorder_traversal(root):
-    if root:
-        print(root.val, end=" ")
-        preorder_traversal(root.left)
-        preorder_traversal(root.right)
-def postorder_traversal(root):
-    if root:
-        postorder_traversal(root.left)
-        postorder_traversal(root.right)
-        print(root.val, end=" ")
-if __name__ == "__main__":
-    root = None
-    root = insert(root, 50)
-    root = insert(root, 30)
-    root = insert(root, 20)
-    root = insert(root, 40)
-    root = insert(root, 70)
-    root = insert(root, 60)
-    root = insert(root, 80)
-    print("Inorder Traversal:")
-    inorder_traversal(root)
-    print("\nPreorder Traversal:")
-    preorder_traversal(root)
-    print("\nPostorder Traversal:")
-    postorder_traversal(root)
+def preorder_traversal(node):
+    if node:
+        print(node.value, end=" ")
+        preorder_traversal(node.left)
+        preorder_traversal(node.right)
+def inorder_traversal(node):
+    if node:
+        inorder_traversal(node.left)
+        print(node.value, end=" ")
+        inorder_traversal(node.right)
+def postorder_traversal(node):
+    if node:
+        postorder_traversal(node.left)
+        postorder_traversal(node.right)
+        print(node.value, end=" ")
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+print("Pre-order traversal:")
+preorder_traversal(root)
+print("\n")
+print("In-order traversal:")
+inorder_traversal(root)
+print("\n")
+print("Post-order traversal:")
+postorder_traversal(root)
+print("\n")
 #4.Function to print all the leaves in a given binary tree
 class TreeNode:
     def __init__(self, key):
